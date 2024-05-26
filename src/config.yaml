@@ -1,0 +1,122 @@
+options:
+  aux_backup_directory:
+    type: string
+    default: "/tmp/duplicity"
+    description: |
+      Specifies an additional directory paths which duplicity will monitor on
+      all units for backup.
+  backend:
+    type: string
+    default: ""
+    description: |
+      Accepted values are s3 | scp | sftp | ftp | rsync | file | azure
+      An empty string will disable backups.
+  remote_backup_url:
+    type: string
+    default: ""
+    description: |
+      URL to the remote server and its local path to be used as the
+      backup destination. 
+      While using azure as a backend:
+      Duplicity will take care to create the container 
+      when performing the backup.  Do not create it manually before.
+
+      Backends and their URL formats:
+        file:      'file:///some_dir'
+        ftp & sftp: 'remote.host[:port]/some_dir'
+        rsync:      'other.host[:port]::/module/some_dir'
+                    'other.host[:port]/relative_path'
+                    'other.host[:port]//absolute_path'
+        s3:         's3:other.host[:port]/bucket_name[/prefix]'
+                    's3+http://bucket_name[/prefix]'
+        azure:      'azure://'
+        scp:        'other.host[:port]/some_dir'
+        sftp:       'other.host[:port]/some_dir'
+  aws_access_key_id:
+    type: string
+    default: ""
+    description: |
+      Access key id for the AWS IMA user. The user must have a policy that
+      grants it privileges to upload to the S3 bucket. This value is required
+      when backend='s3'.
+  aws_secret_access_key:
+    type: string
+    default: ""
+    description: |
+      Secret access key for the AWS IMA user. The user must have a policy that
+      grants it privileges to upload to the S3 bucket. This value is required
+      when backend='s3'.
+  azure_connection_string:
+    type: string
+    default: ""
+    description: |
+      connection string for the AZURE storage account. This value is required
+      when backend='azure'. 
+  remote_user:
+    type: string
+    default: ""
+    description: |
+      This value sets the remote host username for scp, ftp or sftp backups.
+  remote_password:
+    type: string
+    default: ""
+    description: |
+      This value sets the remote server's password to be used for scp, ftp or sftp
+      backups. If unset, it may still be able to authenticate via SSH private key.
+  backup_frequency:
+    type: string
+    default: "manual"
+    description: |
+      Sets the crontab backup frequency to a valid cron string or one of the following:
+      hourly|daily|weekly|monthly|manual
+      If set to manual, crontab backup will not run.
+  retention_period:
+    type: string
+    default: "manual"
+    description: |
+      Sets the retention period of backups. By default, it is set to 30 days.
+      Can be set to:
+      manual, <n>d, <n>h but not both hours and days. For example, 30d, 7d, 36h, etc...
+      If set to manual, crontab for deletion of stale backups will not run.
+  deletion_frequency:
+    type: string
+    default: "daily"
+    description: |
+      Using retention period, a crontab executes at this frequency to delete stale backups.
+      Sets the periodic deletion cron's frequency to one of the following:
+      hourly|daily|<any valid cron string>
+      Note: hourly runs at 40th min mark every hour and daily runs at 2300 everyday.
+  disable_encryption:
+    type: boolean
+    default: False
+    description: |
+      By default, duplicity uses symmetric encryption on backup, requiring a
+      simple password. Duplicity also supports asymmetric encryption, via GPG
+      keys. Setting this value to True disables encryption across the entire
+      application.
+  encryption_passphrase:
+    type: string
+    default: ""
+    description: |
+      Set a passphrase required to perform symmetric encryption.
+  gpg_public_key:
+    type: string
+    default: ""
+    description: |
+      Sets the GPG Public Key used for asymmetrical encryption. When set, this
+      becomes the primary method for encryption.
+  known_host_key:
+    type: string
+    default: ''
+    description: |
+      Host key for remote backup host when using scp, rsync, and sftp backends.
+      Valid host key required when using these backends. The format is:
+      hostname[,ip] algo public_key
+
+      ex: example.com,10.0.0.0 ssh-rsa AAABBBCCC...
+  private_ssh_key:
+    type: string
+    default: ''
+    description:
+      base64 encoded private SSH key for SSH authentication from duplicity
+      application unit and the remote backup host.
