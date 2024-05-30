@@ -1,5 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 {{ frequency }} root /usr/bin/juju-run {{ unit_name }} {{ charm_dir }}/scripts/periodic_deletion.py
 =======
 {{ frequency }} root /usr/bin/{{ juju_command }} {{ unit_name }} {{ charm_dir }}/scripts/periodic_deletion.py
 >>>>>>> 848865c (added azure as backend for storage)
+=======
+{{ frequency }} root /usr/bin/{{ juju_exec_binary }} {{ unit_name }} {{ charm_dir }}/scripts/periodic_deletion.py
+>>>>>>> 8b61a58 (added azure as backend for storage)
